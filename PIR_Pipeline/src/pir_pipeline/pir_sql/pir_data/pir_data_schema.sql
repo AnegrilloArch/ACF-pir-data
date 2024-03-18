@@ -1,6 +1,9 @@
 CREATE DATABASE IF NOT EXISTS pir_data;
+
+-- Use the pir_data database for subsequent operations
 USE pir_data;
 
+-- Create a table to store responses
 CREATE TABLE `response` (
   `uid` varchar(255),
   `question_id` varchar(255),
@@ -8,10 +11,14 @@ CREATE TABLE `response` (
   `year` year,
   PRIMARY KEY (`uid`, `question_id`, `year`)
 );
+
+-- Create indexes for faster retrieval of data based on uid, question_id, and year
 CREATE INDEX ix_response_uid ON response (uid);
 CREATE INDEX ix_response_question_id ON response (question_id);
 CREATE INDEX ix_response_year ON response (`year`);
 
+
+-- Create a table to store program information
 CREATE TABLE `program` (
   `uid` varchar(255),
   `program_number` varchar(255),
@@ -33,9 +40,13 @@ CREATE TABLE `program` (
   `year` year,
   PRIMARY KEY (`uid`, `year`)
 );
+
+-- Create indexes for faster retrieval of data based on uid and year
 CREATE INDEX ix_program_uid ON program (uid);
 CREATE INDEX ix_program_year ON program (`year`);
 
+
+-- Create a table to store questions
 CREATE TABLE `question` (
   `question_id` varchar(255),
   `category` varchar(255),
@@ -49,9 +60,14 @@ CREATE TABLE `question` (
   `year` year,
   PRIMARY KEY (`question_id`, `year`)
 );
+
+
+-- Create indexes for faster retrieval of data based on question_id and year
 CREATE INDEX ix_question_question_id ON question (question_id);
 CREATE INDEX ix_question_year ON question (`year`);
 
+
+-- Create a table to store unmatched questions
 CREATE TABLE `unmatched_question` (
   `question_id` varchar(255),
   `category` varchar(255),
@@ -66,8 +82,12 @@ CREATE TABLE `unmatched_question` (
   `year` year,
   PRIMARY KEY (`question_id`, `year`)
 );
+
+-- Create indexes for faster retrieval of data based on question_id and year
 CREATE INDEX ix_unmatched_question_question_id ON unmatched_question (question_id);
 CREATE INDEX ix_unmatched_question_year ON unmatched_question (`year`);
 
+
+-- Add foreign key constraints to ensure data integrity between tables
 ALTER TABLE `response` ADD FOREIGN KEY (`uid`, `year`) REFERENCES `program` (`uid`, `year`);
 ALTER TABLE `response` ADD FOREIGN KEY (`question_id`, `year`) REFERENCES `question` (`question_id`, `year`);
